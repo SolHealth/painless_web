@@ -1,0 +1,353 @@
+@import 'reset';
+
+// -----------------------------------------------------------------------------
+// COLORS/FONTS/SIZES/FUNCTIONS
+// -----------------------------------------------------------------------------
+
+@IMAGE_ROOT: '';
+//@IMAGE_ROOT: 'https://s3.amazonaws.com/choir.static';
+
+// FONTS --
+
+@font-face {
+  font-family: 'Avenir Next';
+  src: url('fonts/main.ttc') format('truetype');
+}
+
+@p-font: 'Avenir Next', 'Helvertica Neue', 'Helvetica', sans-serif;
+@h-font: @p-font;
+
+// Avenir Weights: 300 400 500 600 700 800/900
+@light-weight: 400;
+@normal-weight: 500;
+@semibold-weight: 600;
+@bold-weight: 700;
+
+@line-height: 1.4em;
+
+// COLORS --
+
+// Key
+// l = light
+// d = dark
+// s = saturated
+// u = ultra
+@action-blue:   #1a9cff;
+@confirm-green: #1ad334;
+@pain-red:      #f7767b;
+@sleep-blue:    #80a8ff;
+@s-sleep-blue:  #4d86ff;
+
+@white:         #ffffff;
+@ul-grey:       #edeef2;
+@l-grey:        #dcdde2;
+@grey:          #c0c2cc;
+@d-grey:        #888b99;
+@ud-grey:       #575a66;
+@black:         #242633;
+@r-black:       #000000;
+
+// SIZES --
+
+@max-page-width: 960px;
+
+// FUNCTIONS --
+
+.retinaImage(@path, @min-width: 481px) {
+  background-image: url(@path);
+  @at2x_path: ~`"@{path}".split('.').slice(0, "@{path}".split('.').length - 1).join(".") + "@2x" + "." + "@{path}".split('.')["@{path}".split('.').length - 1]`;
+
+  @media screen and (min-width: @min-width) and (-webkit-min-device-pixel-ratio : 1.5) {
+    background-image: url(@at2x_path);
+  }
+}
+
+.transition(...) {
+  // Activates hardware acceleration on iOS
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+
+  @props: ~`/\[[a-z0-9\-]+,\s[a-z0-9\.]+,\s[a-z0-9\-]+\]/.test("@{arguments}") ? "@{arguments}".replace(/[\[\],]/g, '') : "@{arguments}".replace(/[\[\]]/g, '')`;
+  transition: @props;
+  -webkit-transition: @props;
+  -moz-transition: @props;
+  -ms-transition: @props;
+  -o-transition: @props;
+}
+
+.background-cover {
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+}
+
+.background-size(@width, @height) {
+  background-size: @width @height;
+  -webkit-background-size: @width @height;
+  -moz-background-size: @width @height;
+  -o-background-size: @width @height;
+}
+
+.border-radius(@radius) {
+  border-radius: @radius;
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  -ms-border-radius: @radius;
+  -o-border-radius: @radius;
+
+  background-clip: padding-box;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+}
+
+// -----------------------------------------------------------------------------
+// CLASSES
+// -----------------------------------------------------------------------------
+
+// BASIC --
+
+html {
+  height: 100%;
+}
+
+body {
+  font-family: @p-font;
+  font-weight: @normal-weight;
+  color: @black;
+
+  // NOTE: This will determine the size of every other font.
+  font-size: 30px;
+
+  height: 100%;
+  background-color: @ul-grey;
+}
+
+a {
+  color: @action-blue;
+  cursor: pointer;
+
+  text-decoration: none;
+
+  .transition(color 0.1s ease-out);
+
+  &:hover, &:active {
+    color: lighten(@action-blue, 10%);
+    text-decoration: none;
+    .transition(color 0.1s ease-out);
+  }
+
+  &:active {
+    color: lighten(@action-blue, 10%);
+    .transition(color 0.1s ease-out);
+  }
+}
+
+// CONTENT
+
+.section {
+  clear: both;
+  position: relative;
+
+  overflow: hidden;
+  padding: 3em 1em;
+
+  &.white {
+    background-color: @white;
+
+    padding-bottom: 0;
+
+    h1, h2, h3 {
+      color: @ud-grey;
+    }
+
+    p {
+      color: @d-grey;
+    }
+  }
+}
+
+.contain {
+  clear: both;
+  max-width: @max-page-width;
+  margin: 0 auto;
+}
+
+h1, h2, h3, p {
+  line-height: @line-height;
+  color: @black;
+}
+
+h1 {
+  font-weight: @bold-weight;
+  font-size: 1.4em;
+  color: @ud-grey;
+
+  padding-top: 1em;
+}
+
+h2 {
+  font-size: @semibold-weight;
+  font-size: 1.2em;
+  color: @ud-grey;
+
+  text-align: center;
+}
+
+h3 {
+  font-size: 1em;
+  font-weight: @bold-weight;
+  color: @ud-grey;
+}
+
+.h-separator {
+  width: 15em;
+  height: .1em;
+
+  background-color: @white;
+
+  margin: 1em auto 1.2em;
+
+  &.bold {
+    height: .2em;
+  }
+
+  &.small {
+    width: 10em;
+  }
+}
+
+p {
+  color: @d-grey;
+  font-weight: @light-weight;
+
+  margin-bottom: 0.5em;
+}
+
+.button {
+  position: relative;
+
+  display: inline-block;
+  cursor: pointer;
+
+  font-family: @p-font;
+  font-size: 0.9em;
+  font-weight: @semibold-weight;
+  line-height: normal;
+
+  color: @white;
+  background-color: @action-blue;
+
+  padding: .5em 1em;
+
+  .transition(background-color 0.1s ease-in);
+
+  &:hover, &:active {
+    color: white;
+    background-color: lighten(@action-blue, 10%);
+    .transition(background-color 0.1s ease-in);
+  }
+
+  &:active {
+    background-color: darken(@action-blue, 10%);
+    .transition(background-color 0.1s ease-in);
+  }
+}
+
+.h-separator {
+  width: 15em;
+  height: .1em;
+
+  background-color: @ud-grey;
+
+  margin: 1em auto 2em;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+center {
+  padding-top: 3em;
+}
+
+// GRAPHICS --
+
+@phone-width: 780px/2;
+@phone-height: 1644px/2;
+@screen-width: 330px;
+@screen-height: 586px;
+@status-height: 21px;
+@content-height: @screen-height - @status-height;
+@cutoff-height: @phone-height * 2/3;
+
+.phone {
+  overflow: hidden;
+  width: @phone-width;
+  height: @phone-height;
+
+  background: transparent none no-repeat top center;
+  .background-cover;
+  .retinaImage('@{IMAGE_ROOT}/images/phone.png');
+
+  &.cutoff {
+    position: relative;
+    margin-top: -6em;
+    height: @cutoff-height;
+  }
+
+  &.left {
+    margin-right: 3em;
+  }
+
+  &.right {
+    margin-left: 3em;
+  }
+
+  .screens {
+    overflow: hidden;
+
+    width: @screen-width;
+    height: @content-height;
+
+    .border-radius(4px);
+
+    margin: 118px auto 0;
+    background: transparent none no-repeat top center;
+    .retinaImage('@{IMAGE_ROOT}/images/phone_status.png');
+    .background-size(@screen-width, @status-height);
+
+    padding-top: @status-height;
+
+    .screen {
+      display: block;
+      width: @screen-width;
+      height: @content-height;
+
+      .border-radius(4px);
+
+      background: transparent none no-repeat center center;
+      .background-cover;
+
+      &.days {
+        .retinaImage('@{IMAGE_ROOT}/images/days.png');
+      }
+
+      &.day {
+        .retinaImage('@{IMAGE_ROOT}/images/day.png');
+      }
+    }
+  }
+}
+
+.white .phone.right {
+  margin-left: 1em;
+}
+
+.contain h3 {
+  padding-top: @phone-height/2 - 100px;
+}

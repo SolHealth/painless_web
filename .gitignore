@@ -1,0 +1,17 @@
+.DS_Store
+node_modules/
+test/javascripts/resources/javascripts
+test/javascripts/resources/support/*
+!test/javascripts/resources/support/stubs.coffee
+.idea/
+.env
+*.js
+*.css
+!*.min.css
+!*.min.js
+!/assets/js/*.js
+dump.rdb
+media/
+log/
+mongo.pid
+mongo.log
